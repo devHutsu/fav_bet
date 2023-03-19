@@ -151,8 +151,14 @@ public class BrowserUtil {
 
             if (tmp == 15)
                 webDriver.navigate().refresh();
-            new WebDriverWait(webDriver, Duration.ofSeconds(20))
-                    .until(wd -> wd.findElement(By.cssSelector("div[class*='EventsContainer_eventsContainer']")));
+
+            try {
+                new WebDriverWait(webDriver, Duration.ofSeconds(20))
+                        .until(wd -> wd.findElement(By.cssSelector("div[class*='EventsContainer_eventsContainer']")));
+
+            }catch (TimeoutException exception){
+                continue;
+            }
 
             Thread.sleep(5_000);
 

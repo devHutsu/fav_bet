@@ -202,61 +202,71 @@ public class ParserFavBet {
                                     service.save(eventVolleyball);
                                     break;
                                 case 2:
-                                    int res_1_set = 0;
-                                    if (eventVolleyball.getRes_1_set() != null) {
-                                         res_1_set = ParseUtil.getTotal(eventVolleyball.getRes_1_set());
-                                    }
 
-                                    if (res_1_set != 0 && res_1_set < 46){
-                                        eventVolleyball.setIsVictory(true);
+                                    if (eventVolleyball.getRes_1_set() != null){
+
+                                        int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_1_set());
+                                        int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_1_set());
+                                        if (scoreFirst > 20 && scoreSecond > 20){
+                                            result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                            eventVolleyball.setRes_2_set(result_set);
+                                        }else {
+                                            eventVolleyball.setIsVictory(true);
+                                        }
+
                                     }else {
                                         result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                         eventVolleyball.setRes_2_set(result_set);
                                     }
+
                                     service.save(eventVolleyball);
+
                                     break;
                                 case 3:
-                                    int res_2_set = 0;
-                                    if (eventVolleyball.getRes_2_set() != null) {
-                                        res_2_set = ParseUtil.getTotal(eventVolleyball.getRes_2_set());
-                                    }
 
-                                    if (res_2_set != 0 && res_2_set < 46){
-                                        eventVolleyball.setIsVictory(true);
+                                    if (eventVolleyball.getRes_2_set() != null){
+
+                                        int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_2_set());
+                                        int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_2_set());
+                                        if (scoreFirst > 20 && scoreSecond > 20){
+                                            result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                            eventVolleyball.setRes_3_set(result_set);
+                                        }else {
+                                            eventVolleyball.setIsVictory(true);
+                                        }
                                     }else {
                                         result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                         eventVolleyball.setRes_3_set(result_set);
                                     }
+
                                     service.save(eventVolleyball);
+
                                     break;
                                 case 4:
-                                    int res_3_set = 0;
-                                    if (eventVolleyball.getRes_3_set() != null){
-                                        res_3_set = ParseUtil.getTotal(eventVolleyball.getRes_3_set());
-                                    }
 
-                                    if (res_3_set != 0 && res_3_set < 46){
-                                        eventVolleyball.setIsVictory(true);
+                                    if (eventVolleyball.getRes_3_set() != null){
+
+                                        int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_3_set());
+                                        int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_3_set());
+                                        if (scoreFirst > 20 && scoreSecond > 20){
+                                            result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                            eventVolleyball.setRes_4_set(result_set);
+                                        }else {
+                                            eventVolleyball.setIsVictory(true);
+                                        }
                                     }else {
                                         result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                         eventVolleyball.setRes_4_set(result_set);
                                     }
 
                                     service.save(eventVolleyball);
+
+                                    break;
                                 default:break;
                             }
 
-
-
                             System.out.println(set);
                             System.out.println(total_container.get(0).text() + " -- " + total_container.get(1).text());
-
-
-
-
-
-
-
 
                         }
                     }
