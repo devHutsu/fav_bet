@@ -32,6 +32,9 @@ public class EventVolleyball {
     @Column(nullable = false, unique = true)
     private String url;
 
+//    @Column(columnDefinition = "boolean default false")
+    private Boolean isVictory;
+
     private Float coeff_P1;
     private Float coeff_P2;
 

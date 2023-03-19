@@ -3,6 +3,8 @@ package dev.hutsu.bet_app.parsers.favbet;
 import dev.hutsu.bet_app.model.Country;
 import dev.hutsu.bet_app.volleyball.model.EventVolleyball;
 import dev.hutsu.bet_app.volleyball.model.LeagueVolleyball;
+import dev.hutsu.bet_app.volleyball.service.EventVollService;
+import dev.hutsu.bet_app.volleyball.service.LeagueVollService;
 import dev.hutsu.bet_app.volleyball.util.ParseUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,7 +18,7 @@ import java.util.Objects;
 
 public class ParserFavBet {
 
-    public static List<EventVolleyball> parseEventVoll(String source){
+    public  List<EventVolleyball> parseEventVoll(String source){
         Document document = Jsoup.parse(source);
 
         Elements listLeague = document.select("div[data-role='-accordion-trigger']");
@@ -150,7 +152,7 @@ public class ParserFavBet {
         return eventVolleyball;
     }
 
-    public static List<EventVolleyball> parseLiveVoll(String source){
+    public void parseLiveVoll(String source, EventVollService service){
 
         Document document = Jsoup.parse(source);
 
@@ -165,25 +167,103 @@ public class ParserFavBet {
                 if(team_container == null) break;
 
                 Elements listEvent = elementLeague.select("div[data-role^='event-id-']");
-                System.out.println(listEvent.size());
+//                System.out.println(listEvent.size());
 
+                if (listEvent.size() > 0){
+                    for (Element elementEvent: listEvent){
+                        var id_role = ParseUtil.getData_id(elementEvent.attr("data-role"));
+
+                        EventVolleyball eventVolleyball = service.getByDataId(id_role);
+                        if (eventVolleyball != null && eventVolleyball.getIsVictory() == null) {
+
+                            String urlLive = ParseUtil.urlLiveEvent(id_role);
+                            if (eventVolleyball.getUrlLive() == null)
+                                eventVolleyball.setUrlLive(urlLive);
+
+                            Element elementContainerEvent = elementEvent.select("div[class*='EventBody_container__CDzH4']")
+                                    .first();
+                            if (elementContainerEvent == null) break;
+
+                            elementContainerEvent = elementContainerEvent.child(0);
+
+
+                            elementContainerEvent = elementContainerEvent.child(0).child(1);
+
+                            Elements set_container = elementContainerEvent.child(0).getElementsByTag("span");
+                            Elements total_container = elementContainerEvent.child(1).getElementsByTag("span");
+
+                            int set = Integer.parseInt(set_container.get(0).text()) + Integer.parseInt(set_container.get(1).text()) + 1;
+
+                            String result_set;
+                            switch (set){
+                                case 1:
+                                    result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                    eventVolleyball.setRes_1_set(result_set);
+                                    service.save(eventVolleyball);
+                                    break;
+                                case 2:
+                                    int res_1_set = 0;
+                                    if (eventVolleyball.getRes_1_set() != null) {
+                                         res_1_set = ParseUtil.getTotal(eventVolleyball.getRes_1_set());
+                                    }
+
+                                    if (res_1_set != 0 && res_1_set < 46){
+                                        eventVolleyball.setIsVictory(true);
+                                    }else {
+                                        result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                        eventVolleyball.setRes_2_set(result_set);
+                                    }
+                                    service.save(eventVolleyball);
+                                    break;
+                                case 3:
+                                    int res_2_set = 0;
+                                    if (eventVolleyball.getRes_2_set() != null) {
+                                        res_2_set = ParseUtil.getTotal(eventVolleyball.getRes_2_set());
+                                    }
+
+                                    if (res_2_set != 0 && res_2_set < 46){
+                                        eventVolleyball.setIsVictory(true);
+                                    }else {
+                                        result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                        eventVolleyball.setRes_3_set(result_set);
+                                    }
+                                    service.save(eventVolleyball);
+                                    break;
+                                case 4:
+                                    int res_3_set = 0;
+                                    if (eventVolleyball.getRes_3_set() != null){
+                                        res_3_set = ParseUtil.getTotal(eventVolleyball.getRes_3_set());
+                                    }
+
+                                    if (res_3_set != 0 && res_3_set < 46){
+                                        eventVolleyball.setIsVictory(true);
+                                    }else {
+                                        result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
+                                        eventVolleyball.setRes_4_set(result_set);
+                                    }
+
+                                    service.save(eventVolleyball);
+                                default:break;
+                            }
+
+
+
+                            System.out.println(set);
+                            System.out.println(total_container.get(0).text() + " -- " + total_container.get(1).text());
+
+
+
+
+
+
+
+
+                        }
+                    }
+                }
             }
-
-
-
         }
 
-
-
-
-        System.out.println(containerLeague.size());
-
-
-
-
-
-
-        return null;
     }
 
 

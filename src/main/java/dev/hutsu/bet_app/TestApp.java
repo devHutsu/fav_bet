@@ -37,7 +37,7 @@ public class TestApp implements CommandLineRunner {
     }
 
     private void test() throws InterruptedException {
-        browserUtil.sourceFavBetVolleyball();
+        browserUtil.liveTest();
 
 //        Thread.sleep(3_000);
 //        new Thread(new Runnable() {

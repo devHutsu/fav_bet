@@ -75,7 +75,7 @@ public class BrowserUtil {
             for (WebElement element : elements_country) {
                 element.click();
                 Thread.sleep(2_000);
-                eventVolleyballList.addAll(ParserFavBet.parseEventVoll(wd.getPageSource()));
+                eventVolleyballList.addAll(parserFavBet.parseEventVoll(wd.getPageSource()));
 
                 log.info(element.getText());
 
@@ -144,17 +144,23 @@ public class BrowserUtil {
 
         ParserFavBet parserFavBet = new ParserFavBet();
 
-        new WebDriverWait(webDriver, Duration.ofSeconds(20))
-                .until(wd -> wd.findElement(By.cssSelector("div[class*='EventsContainer_eventsContainer']")));
+        int tmp = 0;
 
-        Thread.sleep(5_000);
+        while (true) {
+            Thread.sleep(5_000);
+
+            if (tmp == 15)
+                webDriver.navigate().refresh();
+            new WebDriverWait(webDriver, Duration.ofSeconds(20))
+                    .until(wd -> wd.findElement(By.cssSelector("div[class*='EventsContainer_eventsContainer']")));
+
+            Thread.sleep(5_000);
 
 
-        ParserFavBet.parseLiveVoll(webDriver.getPageSource());
+            tmp++;
+            parserFavBet.parseLiveVoll(webDriver.getPageSource(), eventVollService);
+        }
 
-//        while (true){
-//
-//        }
 
 
 

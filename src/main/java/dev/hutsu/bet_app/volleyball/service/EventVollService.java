@@ -44,16 +44,16 @@ public class EventVollService {
         return volleyball;
     }
 
-//    public EventVolleyball getByDataId(Integer dat_id){
-//
-//        Optional<EventVolleyball> eventVolleyball = eventVollRepo.findByDataId(dat_id);
-//        eventVolleyball.orElse()
-//
-//
-//        if (!eventVollRepo.findByDataId(dat_id).isEmpty()){
-//
-//        }
-//    }
+    public EventVolleyball getByDataId(Integer dat_id){
+
+        Optional<EventVolleyball> eventVolleyball = eventVollRepo.findByDataId(dat_id);
+
+        return eventVolleyball.orElse(null);
+    }
+
+    public void save(EventVolleyball eventVolleyball){
+        eventVollRepo.save(eventVolleyball);
+    }
 
 
 

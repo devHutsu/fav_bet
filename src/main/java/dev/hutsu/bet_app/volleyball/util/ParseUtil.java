@@ -29,6 +29,11 @@ public class ParseUtil {
         return Integer.parseInt(tmp[2]);
     }
 
+    public static int getTotal(String source){
+        String[] tmp = source.split(":");
+        return Integer.parseInt(tmp[0]) + Integer.parseInt(tmp[1]);
+    }
+
     public static LocalDateTime dateEvent(String date, String time){
         LocalDateTime tmpLocalDateTime = LocalDateTime.now();
         String[] tmpDate = date.split("\\.");
