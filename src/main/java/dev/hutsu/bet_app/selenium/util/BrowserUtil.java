@@ -149,8 +149,10 @@ public class BrowserUtil {
         while (true) {
             Thread.sleep(5_000);
 
-            if (tmp == 15)
+            if (tmp == 15) {
                 webDriver.navigate().refresh();
+                tmp = 0;
+            }
 
             try {
                 new WebDriverWait(webDriver, Duration.ofSeconds(20))

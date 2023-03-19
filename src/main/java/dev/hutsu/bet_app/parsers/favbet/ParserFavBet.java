@@ -200,22 +200,28 @@ public class ParserFavBet {
                                     result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                     eventVolleyball.setRes_1_set(result_set);
                                     service.save(eventVolleyball);
+
+                                    int tmpScoreFirst = ParseUtil.scoreFirst(result_set);
+                                    int tmpScoreSecond = ParseUtil.scoreFirst(result_set);
+                                    if (tmpScoreFirst > 20 && tmpScoreSecond > 20){
+
+                                    }
+
                                     break;
                                 case 2:
+                                    result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
 
                                     if (eventVolleyball.getRes_1_set() != null){
 
                                         int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_1_set());
                                         int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_1_set());
                                         if (scoreFirst > 20 && scoreSecond > 20){
-                                            result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                             eventVolleyball.setRes_2_set(result_set);
                                         }else {
                                             eventVolleyball.setIsVictory(true);
                                         }
 
                                     }else {
-                                        result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                         eventVolleyball.setRes_2_set(result_set);
                                     }
 
@@ -223,7 +229,6 @@ public class ParserFavBet {
 
                                     break;
                                 case 3:
-
                                     if (eventVolleyball.getRes_2_set() != null){
 
                                         int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_2_set());
@@ -243,7 +248,6 @@ public class ParserFavBet {
 
                                     break;
                                 case 4:
-
                                     if (eventVolleyball.getRes_3_set() != null){
 
                                         int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_3_set());
