@@ -1,10 +1,10 @@
 package dev.hutsu.bet_app.parsers.favbet;
 
 import dev.hutsu.bet_app.model.Country;
+import dev.hutsu.bet_app.selenium.util.BrowserUtil;
 import dev.hutsu.bet_app.volleyball.model.EventVolleyball;
 import dev.hutsu.bet_app.volleyball.model.LeagueVolleyball;
 import dev.hutsu.bet_app.volleyball.service.EventVollService;
-import dev.hutsu.bet_app.volleyball.service.LeagueVollService;
 import dev.hutsu.bet_app.volleyball.util.ParseUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -167,7 +167,7 @@ public class ParserFavBet {
                 if(team_container == null) break;
 
                 Elements listEvent = elementLeague.select("div[data-role^='event-id-']");
-//                System.out.println(listEvent.size());
+
 
                 if (listEvent.size() > 0){
                     for (Element elementEvent: listEvent){
@@ -200,13 +200,6 @@ public class ParserFavBet {
                                     result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                     eventVolleyball.setRes_1_set(result_set);
                                     service.save(eventVolleyball);
-
-                                    int tmpScoreFirst = ParseUtil.scoreFirst(result_set);
-                                    int tmpScoreSecond = ParseUtil.scoreFirst(result_set);
-                                    if (tmpScoreFirst > 20 && tmpScoreSecond > 20){
-
-                                    }
-
                                     break;
                                 case 2:
                                     result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
@@ -216,6 +209,20 @@ public class ParserFavBet {
                                         int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_1_set());
                                         int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_1_set());
                                         if (scoreFirst > 20 && scoreSecond > 20){
+
+                                            if (eventVolleyball
+                                                    .getCoeff_2_set_45_5_larger() == null
+                                                    &&
+                                                    eventVolleyball.getCoeff_2_set_45_5_less() == null){
+
+                                                EventVolleyball volleyballTmp = new BrowserUtil()
+                                                        .sourceCoeffSet(eventVolleyball.getUrlLive(), 2);
+                                                if (volleyballTmp != null) {
+                                                    eventVolleyball.setCoeff_2_set_45_5_larger(volleyballTmp.getCoeff_2_set_45_5_larger());
+                                                    eventVolleyball.setCoeff_2_set_45_5_less(volleyballTmp.getCoeff_2_set_45_5_less());
+                                                }
+                                            }
+
                                             eventVolleyball.setRes_2_set(result_set);
                                         }else {
                                             eventVolleyball.setIsVictory(true);
@@ -231,9 +238,24 @@ public class ParserFavBet {
                                 case 3:
                                     if (eventVolleyball.getRes_2_set() != null){
 
+
                                         int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_2_set());
                                         int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_2_set());
                                         if (scoreFirst > 20 && scoreSecond > 20){
+
+                                            if (eventVolleyball
+                                                    .getCoeff_3_set_45_5_larger() == null
+                                                    &&
+                                                    eventVolleyball.getCoeff_3_set_45_5_less() == null){
+
+                                                EventVolleyball volleyballTmp = new BrowserUtil()
+                                                        .sourceCoeffSet(eventVolleyball.getUrlLive(), 3);
+                                                if (volleyballTmp != null) {
+                                                    eventVolleyball.setCoeff_3_set_45_5_larger(volleyballTmp.getCoeff_3_set_45_5_larger());
+                                                    eventVolleyball.setCoeff_3_set_45_5_less(volleyballTmp.getCoeff_3_set_45_5_less());
+                                                }
+                                            }
+
                                             result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                             eventVolleyball.setRes_3_set(result_set);
                                         }else {
@@ -253,6 +275,20 @@ public class ParserFavBet {
                                         int scoreFirst = ParseUtil.scoreFirst(eventVolleyball.getRes_3_set());
                                         int scoreSecond = ParseUtil.scoreSecond(eventVolleyball.getRes_3_set());
                                         if (scoreFirst > 20 && scoreSecond > 20){
+
+                                            if (eventVolleyball
+                                                    .getCoeff_4_set_45_5_larger() == null
+                                                    &&
+                                                    eventVolleyball.getCoeff_4_set_45_5_less() == null){
+
+                                                EventVolleyball volleyballTmp = new BrowserUtil()
+                                                        .sourceCoeffSet(eventVolleyball.getUrlLive(), 4);
+                                                if (volleyballTmp != null) {
+                                                    eventVolleyball.setCoeff_4_set_45_5_larger(volleyballTmp.getCoeff_4_set_45_5_larger());
+                                                    eventVolleyball.setCoeff_4_set_45_5_less(volleyballTmp.getCoeff_4_set_45_5_less());
+                                                }
+                                            }
+
                                             result_set = total_container.get(0).text() + ":" + total_container.get(1).text();
                                             eventVolleyball.setRes_4_set(result_set);
                                         }else {
@@ -268,15 +304,83 @@ public class ParserFavBet {
                                     break;
                                 default:break;
                             }
-
                             System.out.println(set);
                             System.out.println(total_container.get(0).text() + " -- " + total_container.get(1).text());
-
                         }
                     }
                 }
             }
         }
+    }
+
+    public EventVolleyball getEventVollCoeffSets(String source, int set){
+
+
+        Document document = Jsoup.parse(source);
+
+        Elements containerTotal = document.select("div[data-role$='-accordion-trigger']:contains(Тотал)");
+
+        if (containerTotal.size() < 1 ) return null;
+
+        Element elementTotalContainer;
+        if (containerTotal.size() > 1){
+            elementTotalContainer = containerTotal.get(1);
+        }else {
+            elementTotalContainer = containerTotal.get(0);
+        }
+
+
+        EventVolleyball eventVolleyball = new EventVolleyball();
+
+
+         Element div_container = elementTotalContainer
+                 .select(String.format("div[class*='MarketsTypeSection_titleContainer']:contains(%s Сет)", set))
+                 .first();
+         if (div_container == null) return null;
+
+         div_container = div_container.nextElementSibling();
+
+         if (div_container == null) return null;
+
+         div_container = div_container
+                 .select("div[class*='MarketsTypeSection_outcomeWithNameContainer']:contains(45.5)")
+                 .first();
+
+         if (div_container == null) return null;
+
+         Elements coeff_totals = div_container.select("div[class*='MarketOutcomeContainer_outcomeContainer']");
+
+         if (coeff_totals.size() < 2) return null;
+
+         float coeff_larger = Float.parseFloat(Objects.requireNonNull(coeff_totals
+                 .get(0)
+                 .select("span[class*='OutcomeButton_coef']")
+                 .first()).text());
+
+         float coeff_less = Float.parseFloat(Objects.requireNonNull(coeff_totals
+                 .get(1)
+                 .select("span[class*='OutcomeButton_coef']")
+                 .first()).text());
+         System.out.println(coeff_larger + " -- " + coeff_less);
+
+
+        switch (set) {
+            case 2 -> {
+                eventVolleyball.setCoeff_2_set_45_5_larger(coeff_larger);
+                eventVolleyball.setCoeff_2_set_45_5_less(coeff_less);
+            }
+            case 3 -> {
+                eventVolleyball.setCoeff_3_set_45_5_larger(coeff_larger);
+                eventVolleyball.setCoeff_3_set_45_5_less(coeff_less);
+            }
+            case 4 -> {
+                eventVolleyball.setCoeff_4_set_45_5_larger(coeff_larger);
+                eventVolleyball.setCoeff_4_set_45_5_less(coeff_less);
+            }
+        }
+
+
+         return eventVolleyball;
 
     }
 

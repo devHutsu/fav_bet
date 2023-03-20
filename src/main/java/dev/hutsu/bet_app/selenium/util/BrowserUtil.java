@@ -27,11 +27,12 @@ public class BrowserUtil {
     private final static String URL_BROWSER = "http://37.57.8.139:4444/wd/hub";
     public static final String CHROME = "chrome";
 
-    private final EventVollService eventVollService;
-
     @Autowired
-    public BrowserUtil(EventVollService eventVollService) {
-        this.eventVollService = eventVollService;
+    private  EventVollService eventVollService;
+
+
+    public BrowserUtil() {
+
     }
 
     @SneakyThrows
@@ -133,7 +134,38 @@ public class BrowserUtil {
     }
 
     @SneakyThrows
-    public void liveTest(){
+    public EventVolleyball sourceCoeffSet(String url, int set){
+
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setBrowserName(CHROME);
+        WebDriver webDriver = new RemoteWebDriver(new URL(URL_BROWSER), capabilities);
+        webDriver.manage().window().maximize();
+        webDriver.get(url);
+
+        ParserFavBet favBet = new ParserFavBet();
+
+        try {
+            new WebDriverWait(webDriver, Duration.ofSeconds(20))
+                    .until(wd -> wd.findElement(By.cssSelector("div[class='EventMarkets_twoColumns__b-sex']")));
+            Thread.sleep(5_000);
+
+        }catch (TimeoutException exception){
+            return null;
+        }
+
+
+        EventVolleyball eventVolleyball = favBet.getEventVollCoeffSets(webDriver.getPageSource(), set);
+
+        webDriver.close();
+
+        return eventVolleyball;
+
+
+    }
+
+    @SneakyThrows
+    public void liveVoll(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName(CHROME);
 
@@ -159,6 +191,7 @@ public class BrowserUtil {
                         .until(wd -> wd.findElement(By.cssSelector("div[class*='EventsContainer_eventsContainer']")));
 
             }catch (TimeoutException exception){
+                tmp++;
                 continue;
             }
 

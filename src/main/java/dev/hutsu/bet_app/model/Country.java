@@ -1,7 +1,6 @@
 package dev.hutsu.bet_app.model;
 
 
-import dev.hutsu.bet_app.basketball.model.LeagueBasketball;
 import dev.hutsu.bet_app.volleyball.model.LeagueVolleyball;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
