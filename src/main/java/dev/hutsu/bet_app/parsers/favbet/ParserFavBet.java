@@ -347,38 +347,43 @@ public class ParserFavBet {
                  .select("div[class*='MarketsTypeSection_outcomeWithNameContainer']:contains(45.5)")
                  .first();
 
-         if (div_container == null) return null;
+         if (div_container == null){
+             eventVolleyball.setCoeff_2_set_45_5_larger((float) 0);
+             eventVolleyball.setCoeff_2_set_45_5_less((float) 0);
 
-         Elements coeff_totals = div_container.select("div[class*='MarketOutcomeContainer_outcomeContainer']");
+         }else {
 
-         if (coeff_totals.size() < 2) return null;
+             Elements coeff_totals = div_container.select("div[class*='MarketOutcomeContainer_outcomeContainer']");
 
-         float coeff_larger = Float.parseFloat(Objects.requireNonNull(coeff_totals
-                 .get(0)
-                 .select("span[class*='OutcomeButton_coef']")
-                 .first()).text());
+             if (coeff_totals.size() < 2) return null;
 
-         float coeff_less = Float.parseFloat(Objects.requireNonNull(coeff_totals
-                 .get(1)
-                 .select("span[class*='OutcomeButton_coef']")
-                 .first()).text());
-         System.out.println(coeff_larger + " -- " + coeff_less);
+             float coeff_larger = Float.parseFloat(Objects.requireNonNull(coeff_totals
+                     .get(0)
+                     .select("span[class*='OutcomeButton_coef']")
+                     .first()).text());
+
+             float coeff_less = Float.parseFloat(Objects.requireNonNull(coeff_totals
+                     .get(1)
+                     .select("span[class*='OutcomeButton_coef']")
+                     .first()).text());
+             System.out.println(coeff_larger + " -- " + coeff_less);
 
 
-        switch (set) {
-            case 2 -> {
-                eventVolleyball.setCoeff_2_set_45_5_larger(coeff_larger);
-                eventVolleyball.setCoeff_2_set_45_5_less(coeff_less);
-            }
-            case 3 -> {
-                eventVolleyball.setCoeff_3_set_45_5_larger(coeff_larger);
-                eventVolleyball.setCoeff_3_set_45_5_less(coeff_less);
-            }
-            case 4 -> {
-                eventVolleyball.setCoeff_4_set_45_5_larger(coeff_larger);
-                eventVolleyball.setCoeff_4_set_45_5_less(coeff_less);
-            }
-        }
+             switch (set) {
+                 case 2 -> {
+                     eventVolleyball.setCoeff_2_set_45_5_larger(coeff_larger);
+                     eventVolleyball.setCoeff_2_set_45_5_less(coeff_less);
+                 }
+                 case 3 -> {
+                     eventVolleyball.setCoeff_3_set_45_5_larger(coeff_larger);
+                     eventVolleyball.setCoeff_3_set_45_5_less(coeff_less);
+                 }
+                 case 4 -> {
+                     eventVolleyball.setCoeff_4_set_45_5_larger(coeff_larger);
+                     eventVolleyball.setCoeff_4_set_45_5_less(coeff_less);
+                 }
+             }
+         }
 
 
          return eventVolleyball;
