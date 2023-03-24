@@ -2,6 +2,7 @@ package dev.hutsu.bet_app;
 
 import dev.hutsu.bet_app.selenium.util.BrowserUtil;
 import dev.hutsu.bet_app.telegram.TelegramBotBasketPari;
+import dev.hutsu.bet_app.volleyball.service.EventVollService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +18,9 @@ public class TestApp implements CommandLineRunner {
     @Autowired
     private TelegramBotBasketPari botBasketPari;
     private BrowserUtil browserUtil;
+
+    @Autowired
+    private EventVollService eventVollService;
 
     @Autowired
     public TestApp(BrowserUtil browserUtil) {
@@ -38,7 +42,12 @@ public class TestApp implements CommandLineRunner {
 
 //        browserUtil.sourceCoeffSet("https://www.favbet.ua/uk/live/event/volleyball/39148550/", 3);
 
-        startLiveParse();
+//        startLiveParse();
+        eventVollService.deleteDateLess();
+
+
+
+
     }
 
     @SneakyThrows

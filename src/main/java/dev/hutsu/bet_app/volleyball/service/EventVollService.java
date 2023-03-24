@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,6 +57,27 @@ public class EventVollService {
     public void save(EventVolleyball eventVolleyball){
         eventVolleyball.setAddEvent(LocalDateTime.now());
         eventVollRepo.save(eventVolleyball);
+    }
+
+    public void deleteDateLess(){
+        LocalDateTime dateTime = LocalDateTime.now();
+        dateTime.minusHours(2);
+        List<EventVolleyball> eventVolleyballList = eventVollRepo.getByDateLess(dateTime);
+
+        if (eventVolleyballList.size() > 0){
+
+            List<EventVolleyball> eventVolleyballs = eventVolleyballList.stream().filter(eventVolleyball -> eventVolleyball.getRes_1_set() == null)
+                    .collect(Collectors.toList());
+
+            if (eventVolleyballs.size() > 0){
+                eventVollRepo.deleteAll(eventVolleyballs);
+            }
+
+        }
+
+
+
+
     }
 
 
