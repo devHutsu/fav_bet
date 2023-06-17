@@ -42,8 +42,11 @@ public class TestApp implements CommandLineRunner {
 
 //        browserUtil.sourceCoeffSet("https://www.favbet.ua/uk/live/event/volleyball/39148550/", 3);
 
-//        startLiveParse();
-        eventVollService.deleteDateLess();
+        startLiveParse();
+//        eventVollService.deleteDateLess();
+
+
+//        updateTest();
 
 
 
@@ -66,6 +69,12 @@ public class TestApp implements CommandLineRunner {
         }
 
 
+    }
+
+    private void updateTest(){
+        Runnable runnable = browserUtil::sourceFavBetVolleyball;
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
 

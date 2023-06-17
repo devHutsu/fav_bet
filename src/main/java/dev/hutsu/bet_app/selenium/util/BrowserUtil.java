@@ -52,7 +52,7 @@ public class BrowserUtil {
 
         try {
             new WebDriverWait(wd, Duration.ofSeconds(20))
-                    .until(webDriver -> webDriver.findElement(By.xpath("//div[@class='SportsBookSearch_container__3V3-c']")));
+                    .until(webDriver -> webDriver.findElement(By.xpath("//div[@class='SportsBookSearch_container--cLa']")));
         }catch (NoSuchSessionException e){
             log.info("Не обнаружен элемент {}", "WebDriver");
             return;
