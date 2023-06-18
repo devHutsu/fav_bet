@@ -181,7 +181,7 @@ public class ParserFavBet {
                             if (eventVolleyball.getUrlLive() == null)
                                 eventVolleyball.setUrlLive(urlLive);
 
-                            Element elementContainerEvent = elementEvent.select("div[class*='EventBody_container__CDzH4']")
+                            Element elementContainerEvent = elementEvent.select("div[class*='EventBody_container--lRT']")
                                     .first();
                             if (elementContainerEvent == null) break;
 
