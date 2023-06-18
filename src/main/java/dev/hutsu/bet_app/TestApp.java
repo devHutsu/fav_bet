@@ -42,7 +42,17 @@ public class TestApp implements CommandLineRunner {
 
 //        browserUtil.sourceCoeffSet("https://www.favbet.ua/uk/live/event/volleyball/39148550/", 3);
 
+
+//        ---------------Для запуска программы ----------------------------------
+
         startLiveParse();
+
+
+
+//      ------------------------------------------------------------------------
+
+
+
 //        eventVollService.deleteDateLess();
 
 

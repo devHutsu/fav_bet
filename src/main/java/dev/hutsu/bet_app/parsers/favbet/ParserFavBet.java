@@ -58,7 +58,7 @@ public class ParserFavBet {
                     System.out.println(urlEvent);
 
                     Elements listTeam = eventContainer
-                            .select("div[class$=EventParticipants_participantMain__pDT2a]");
+                            .select("div[class$=EventParticipants_participantMain--F2z]");
                     if (listTeam.size() < 2) break;
 
                     String titleFirstTeam = listTeam.get(0).text();

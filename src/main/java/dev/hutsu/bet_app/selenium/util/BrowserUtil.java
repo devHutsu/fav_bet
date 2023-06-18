@@ -202,15 +202,7 @@ public class BrowserUtil {
             parserFavBet.parseLiveVoll(webDriver.getPageSource(), eventVollService);
         }
 
-
-
-
-
-
-
-
-
-    }
+   }
 
 
 
