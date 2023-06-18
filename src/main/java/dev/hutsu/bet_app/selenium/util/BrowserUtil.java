@@ -146,12 +146,13 @@ public class BrowserUtil {
         ParserFavBet favBet = new ParserFavBet();
 
         try {
-            new WebDriverWait(webDriver, Duration.ofSeconds(20))
-                    .until(wd -> wd.findElement(By.cssSelector("div[class='EventMarkets_twoColumns__b-sex']")));
-            Thread.sleep(5_000);
+//            new WebDriverWait(webDriver, Duration.ofSeconds(20))
+//                    .until(wd -> wd.findElement(By.cssSelector("div[class='EventMarkets_twoColumns--kan']")));
+            Thread.sleep(10_000);
 
         }catch (TimeoutException exception){
-            return null;
+//            webDriver.close();
+//            return null;
         }
 
 
